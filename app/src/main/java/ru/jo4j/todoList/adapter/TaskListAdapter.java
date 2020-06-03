@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,23 +16,21 @@ import java.util.List;
 import ru.jo4j.todoList.ConfirmDeleteFragment;
 import ru.jo4j.todoList.activities.DetailActivity;
 import ru.jo4j.todoList.R;
-import ru.jo4j.todoList.activities.EditDetailActivity;
 import ru.jo4j.todoList.model.Task;
+import ru.jo4j.todoList.model.TaskStore;
 
-import static ru.jo4j.todoList.activities.MainActivity.EDIT_TASK;
 
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskHolder> implements View.OnClickListener,
-          ConfirmDeleteFragment.ConfirmHintDialogListener {
+        ConfirmDeleteFragment.ConfirmHintDialogListener {
     private AppCompatActivity activity;
-    private List<Task> tasks;
+    private TaskStore store;
 
-    public TaskListAdapter(List<Task> tasks, AppCompatActivity activity) {
+    public TaskListAdapter(AppCompatActivity activity, TaskStore store) {
         this.activity = activity;
-        this.tasks = tasks;
+        this.store = store;
     }
 
-    class TaskHolder extends RecyclerView.ViewHolder {
-
+    public class TaskHolder extends RecyclerView.ViewHolder {
         public TaskHolder(@NonNull View itemView) {
             super(itemView);
         }
@@ -50,13 +47,13 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskHo
     @Override
     public void onBindViewHolder(@NonNull TaskListAdapter.TaskHolder holder, int position) {
         TextView name = holder.itemView.findViewById(R.id.name);
-        name.setText(tasks.get(position).getName());
+        name.setText(store.getTasks().get(position).getName());
         TextView desc = holder.itemView.findViewById(R.id.desc);
-        desc.setText(tasks.get(position).getDesc());
+        desc.setText(store.getTasks().get(position).getDesc());
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(activity, DetailActivity.class);
-            intent.putExtra("name", tasks.get(position).getName());
-            intent.putExtra("desc", tasks.get(position).getDesc());
+            intent.putExtra("name", store.getTasks().get(position).getName());
+            intent.putExtra("desc", store.getTasks().get(position).getDesc());
             activity.startActivity(intent);
         });
         holder.itemView.setOnLongClickListener(view -> {
@@ -64,36 +61,33 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskHo
             dialog.show(activity.getSupportFragmentManager(), "dialog_tag");
             return false;
         });
-
     }
-
 
     @Override
     public int getItemCount() {
-        return tasks.size();
+        return store.getTasks().size();
     }
-
 
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(activity, DetailActivity.class);
         int position = 0;
-        intent.putExtra("name", tasks.get(position).getName());
-        intent.putExtra("desc", tasks.get(position).getDesc());
+        intent.putExtra("name", store.getTasks().get(position).getName());
+        intent.putExtra("desc", store.getTasks().get(position).getDesc());
         activity.startActivity(intent);
     }
 
     @Override
     public void onPositiveDialogClick(int position) {
-        tasks.remove(position);
+        store.getTasks().remove(position);
         notifyDataSetChanged();
     }
 
     public List<Task> getTasks() {
-        return tasks;
+      return store.getTasks();
     }
 
     public void addTask(Task task) {
-        tasks.add(task);
+        store.getTasks().add(task);
     }
 }

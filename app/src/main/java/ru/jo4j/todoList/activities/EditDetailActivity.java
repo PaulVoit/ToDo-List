@@ -20,12 +20,10 @@ public class EditDetailActivity extends AppCompatActivity {
         setContentView(R.layout.editor_task);
         name = findViewById(R.id.name);
         desc = findViewById(R.id.desc);
-
         String strName = getIntent().getStringExtra("name");
         String strDesc = getIntent().getStringExtra("desc");
         requestCode = getIntent().getIntExtra("requestCode", 0);
         position = getIntent().getIntExtra("position", 0);
-
         if (strName != null && strDesc != null) {
             name.setText(strName);
             desc.setText(strDesc);
@@ -33,16 +31,12 @@ public class EditDetailActivity extends AppCompatActivity {
     }
 
     private void saveChanges() {
-
         Intent intent = new Intent();
-
         if (requestCode == MainActivity.EDIT_TASK) {
             intent.putExtra("position", position);
         }
-
         intent.putExtra("editedName", name.getText().toString());
         intent.putExtra("editDesc", desc.getText().toString());
-
         setResult(RESULT_OK, intent);
     }
 

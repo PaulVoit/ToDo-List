@@ -18,15 +18,11 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task_detail);
-
         name = findViewById(R.id.name);
         desc = findViewById(R.id.desc);
-
         String strName = getIntent().getStringExtra("name");
         String strDesc = getIntent().getStringExtra("desc");
-
         requestCode = getIntent().getIntExtra("requestCode", 0);
-
         if (strName != null && strDesc != null) {
             name.setText(strName);
             desc.setText(strDesc);

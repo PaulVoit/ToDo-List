@@ -12,7 +12,6 @@ public class ConfirmDeleteFragment extends DialogFragment {
     private int position;
 
     public interface ConfirmHintDialogListener {
-
         void onPositiveDialogClick(int position);
     }
 
@@ -23,7 +22,6 @@ public class ConfirmDeleteFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         Dialog dialog = new AlertDialog.Builder(getActivity())
                 .setMessage("Delete task?")
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
