@@ -7,11 +7,27 @@ public class Task {
     private String desc;
     private Date created;
     private boolean closed = false;
+    private int id;
 
     public Task(String name, String desc, Date created) {
         this.name = name;
         this.desc = desc;
         this.created = created;
+    }
+
+    public Task(int id, String name, String desc, Date created) {
+        this.name = name;
+        this.desc = desc;
+        this.created = created;
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -58,6 +74,7 @@ public class Task {
         if (!getDesc().equals(task.getDesc())) return false;
         return getCreated().equals(task.getCreated());
     }
+
     @Override
     public int hashCode() {
         int result = getName().hashCode();

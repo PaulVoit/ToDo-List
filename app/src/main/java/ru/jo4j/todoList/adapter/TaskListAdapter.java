@@ -16,6 +16,8 @@ import java.util.List;
 import ru.jo4j.todoList.ConfirmDeleteFragment;
 import ru.jo4j.todoList.activities.DetailActivity;
 import ru.jo4j.todoList.R;
+import ru.jo4j.todoList.database.SqlStore;
+import ru.jo4j.todoList.model.IStore;
 import ru.jo4j.todoList.model.Task;
 import ru.jo4j.todoList.model.TaskStore;
 
@@ -23,11 +25,11 @@ import ru.jo4j.todoList.model.TaskStore;
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskHolder> implements View.OnClickListener,
         ConfirmDeleteFragment.ConfirmHintDialogListener {
     private AppCompatActivity activity;
-    private TaskStore store;
+    private IStore sqlStore;
 
-    public TaskListAdapter(AppCompatActivity activity, TaskStore store) {
+    public TaskListAdapter(AppCompatActivity activity, IStore store) {
         this.activity = activity;
-        this.store = store;
+        this.sqlStore = store;
     }
 
     public class TaskHolder extends RecyclerView.ViewHolder {
@@ -47,13 +49,13 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskHo
     @Override
     public void onBindViewHolder(@NonNull TaskListAdapter.TaskHolder holder, int position) {
         TextView name = holder.itemView.findViewById(R.id.name);
-        name.setText(store.getTasks().get(position).getName());
+        name.setText(sqlStore.getTasks().get(position).getName());
         TextView desc = holder.itemView.findViewById(R.id.desc);
-        desc.setText(store.getTasks().get(position).getDesc());
+        desc.setText(sqlStore.getTasks().get(position).getDesc());
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(activity, DetailActivity.class);
-            intent.putExtra("name", store.getTasks().get(position).getName());
-            intent.putExtra("desc", store.getTasks().get(position).getDesc());
+            intent.putExtra("name", sqlStore.getTasks().get(position).getName());
+            intent.putExtra("desc", sqlStore.getTasks().get(position).getDesc());
             activity.startActivity(intent);
         });
         holder.itemView.setOnLongClickListener(view -> {
@@ -65,29 +67,30 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskHo
 
     @Override
     public int getItemCount() {
-        return store.getTasks().size();
+        return sqlStore.getTasks().size();
     }
 
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(activity, DetailActivity.class);
         int position = 0;
-        intent.putExtra("name", store.getTasks().get(position).getName());
-        intent.putExtra("desc", store.getTasks().get(position).getDesc());
+        intent.putExtra("name", sqlStore.getTasks().get(position).getName());
+        intent.putExtra("desc", sqlStore.getTasks().get(position).getDesc());
         activity.startActivity(intent);
     }
 
     @Override
     public void onPositiveDialogClick(int position) {
-        store.getTasks().remove(position);
+        sqlStore.getTasks().remove(position);
         notifyDataSetChanged();
     }
-
+/*
     public List<Task> getTasks() {
-      return store.getTasks();
+      return sqlStore.getTasks();
     }
-
     public void addTask(Task task) {
         store.getTasks().add(task);
     }
+
+    */
 }

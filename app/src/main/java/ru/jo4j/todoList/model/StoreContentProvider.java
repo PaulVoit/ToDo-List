@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 public class StoreContentProvider extends ContentProvider {
 
     public static final Uri CONTENT_URI = Uri.parse("content://ru.job4j.todo/items");
-    Store store = new TaskStore();
+    IStore mIStore = new TaskStore();
 
     @Override
     public boolean onCreate() {
@@ -24,7 +24,7 @@ public class StoreContentProvider extends ContentProvider {
                         @Nullable String selection,
                         @Nullable String[] selectionArgs,
                         @Nullable String sortOrder) {
-        return new StoreCursor(store, selection);
+        return new StoreCursor(mIStore, selection);
     }
 
     @Nullable

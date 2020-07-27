@@ -1,15 +1,21 @@
 package ru.jo4j.todoList.model;
 
-import android.content.Context;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class TaskStore implements Store {
+public class TaskStore implements IStore {
+    private static final TaskStore INST = new TaskStore();
     private List<Task> tasks;
 
+    public static TaskStore getStore() {
+        return INST;
+    }
 
     public TaskStore() {
         tasks = new ArrayList<>();
@@ -34,5 +40,29 @@ public class TaskStore implements Store {
         tasks.remove(task);
     }
 
+    @Override
+    public void editTask(Task task) {
 
+    }
+
+
+    @Override
+    public List<Task> getFilteredTasks(String filter) {
+        List<Task> list = new ArrayList<>();
+        for (Task task : this.tasks) {
+            if (task.getName().toLowerCase().contains(filter.toLowerCase()) ||
+                    task.getDesc().toLowerCase().contains(filter.toLowerCase())) {
+                list.add(task);
+            }
+        }
+        return list;
+    }
+
+    public int size() {
+        return this.tasks.size();
+    }
+
+    public Task get(int index) {
+        return this.tasks.get(index);
+    }
 }
